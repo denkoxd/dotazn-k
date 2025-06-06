@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dotazník</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7f8;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin: 0;
+        }
+        fieldset {
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        legend {
+            font-size: 18px;
+            font-weight: 500;
+            color: #2a7ae2;
+            padding: 0 10px;
+        }
+        .option {
+            padding: 15px;
+            margin: 10px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 18px;
+            text-align: center;
+            display: block;
+        }
+        .option:hover {
+            background-color: #0056b3;
+        }
+        .option.selected {
+            background-color: #28a745;
+        }
+        .form-container {
+            display: none;
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input[type="text"], input[type="email"], textarea, input[type="number"], input[type="tel"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        textarea {
+            min-height: 80px;
+        }
+        button {
+            background-color: #2a7ae2;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+        .navigation {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .radio-group {
+            margin-bottom: 15px;
+        }
+        .radio-group label {
+            display: inline-block;
+            margin-right: 15px;
+        }
+        .checkbox-group {
+            margin-bottom: 15px;
+        }
+        .checkbox-group label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        small {
+            font-size: 12px;
+            color: #666;
+        }
+        .welcome-container {
+            text-align: center;
+        }
+        .course-options {
+            margin-top: 30px;
+        }
+        .course-selected {
+            background-color: #28a745;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+        }
+    
+
+textarea {
+    resize: none;
+}
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="tel"],
+textarea {
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+</style>
+
+
+</head>
+<body>
+<div class="logo-container">
+    <img src="../DOTAZNÍK source code/SAFIRS-BLUE-HORIZONTAL.svg" alt="Firemné logo">
+	
+	
+</div>
+<style>	.logo-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.logo-container img {
+    width: 150px; /* Prispôsobte veľkosť podľa potreby */
+    height: auto;
+}
+
+
+textarea {
+    resize: none;
+}
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="tel"],
+textarea {
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+</style>
+   <div class="container">
+        <!-- Welcome Page -->
+        <div id="welcomePage" class="welcome-container">
+    <header>
+        <h1>Vítame vás v dotazníku na určenie rozsahu služieb</h1>
+        <p>Prosím, vyberte si jednu alebo viac služieb:</p>
+    </header>
+
+    <div class="course-options">
+        <div class="option" onclick="toggleCourse('OPP')">OCHRANA PRED POŽIARMI („OPP“)</div>
+        <div class="option" onclick="toggleCourse('BTS')">BEZPEČNOSTNOTECHNICKÁ SLUŽBA („BTS“)</div>
+        <div class="option" onclick="toggleCourse('PZS')">PRACOVNÁ ZDRAVOTNÁ SLUŽBA („PZS“)</div>
+        <div class="option" onclick="toggleCourse('OŽP')">OCHRANA ŽIVOTNÉHO PROSTREDIA („OŽP“)</div>
+        <div class="option" onclick="toggleCourse('CO')">CIVILNÁ OCHRANA („CO“)</div>
+        <div class="option" onclick="toggleCourse('OOÚ')">OCHRANA OSOBNÝCH ÚDAJOV („OOÚ“)</div>
+    </div>
+
+    <div id="selectedCourseDisplay" class="course-selected" style="display: none;"></div>
+
+    <div class="navigation" id="welcomeNavigation" style="display: none;">
+		<center>
+        <button type="button" onclick="startQuestionnaire()">Pokračovať</button>
+			</center>
+    </div>
+</div>
+
+		 
+        
+        <!-- Questionnaire Form (hidden initially) -->
+        <form id="fireSafetyForm" style="display: none;">
+            <!-- Stránka 0 – A. Všeobecné, základné údaje o Vašej spoločnosti (otázky 1-15) -->
+            <div class="page-section" data-page="0" data-courses="OPP,BTS,PZS,OŽP,CO,OOÚ">
+                <fieldset>
+                    <legend>A. Všeobecné, základné údaje o Vašej spoločnosti</legend>
+                    <label for="q1">1. Obchodné meno/Názov spoločnosti:</label>
+                    <input type="text" id="q1" name="companyName" required>
+                    
+                    <label for="q2">2. Sídlo:</label>
+                    <input type="text" id="q2" name="address" required>
+                    
+                    <label for="q3">3. Zastúpený, Konateľ/SZČO:</label>
+                    <input type="text" id="q3" name="representative" required>
+                    
+                    <label for="q4">4. IČO:</label>
+                    <input type="text" id="q4" name="ico" required>
+                    
+                    <label for="q5">5. Telefónne číslo, Konateľ/SZČO:</label>
+                    <input type="tel" id="q5" name="phoneRepresentative" required>
+                    
+                    <label for="q6">6. Email, Konateľ/SZČO:</label>
+                    <input type="email" id="q6" name="emailRepresentative" required>
+                    
+                    <label for="q7">7. Stručný popis vykonávaných ekonomických činností:</label>
+                    <textarea id="q7" name="economicDescription" required></textarea>
+                    
+                    <label for="q8">8. Kontaktná osoba pre veci zmluvné, meno, priezvisko:</label>
+                    <input type="text" id="q8" name="contractContactName" required>
+                    
+                    <label for="q9">9. Telefón kontaktnej osoby pre veci zmluvné:</label>
+                    <input type="tel" id="q9" name="contractContactPhone" required>
+                    
+                    <label for="q10">10. Názov pracovnej pozície osoby pre veci zmluvné:</label>
+                    <input type="text" id="q10" name="contractContactPosition" required>
+                    
+                    <label for="q11">11. Email osoby pre veci zmluvné:</label>
+                    <input type="email" id="q11" name="contractContactEmail" required>
+                    
+                    <label for="q12">12. Kontaktná osoba pre veci technické, meno, priezvisko:</label>
+                    <input type="text" id="q12" name="technicalContactName" required>
+                    
+                    <label for="q13">13. Telefón kontaktnej osoby pre veci technické:</label>
+                    <input type="tel" id="q13" name="technicalContactPhone" required>
+                    
+                    <label for="q14">14. Názov pracovnej pozície osoby pre veci technické:</label>
+                    <input type="text" id="q14" name="technicalContactPosition" required>
+                    
+                    <label for="q15">15. Email osoby pre veci technické:</label>
+                    <input type="email" id="q15" name="technicalContactEmail" required>
+                </fieldset>
+                
+            </div>
+            
+            <!-- Stránka 1 – B. Prevádzky spoločnosti/spoločné pracoviská s iným zamestnávateľom (otázka 16) -->
+            <div class="page-section" data-page="1" data-courses="OPP,BTS,PZS,OŽP,CO,OOÚ">
+                <fieldset>
+                    <legend>B. Prevádzky spoločnosti/spoločné pracoviská s iným zamestnávateľom</legend>
+                    <label for="q16">16. Adresa prevádzky/spoločného pracoviska (pokiaľ nie sú v sídle spoločnosti), počet zamestnancov/pracovisko:</label>
+                    <input type="text" id="q16" name="branchAddress" required>
+                </fieldset>
+                
+            </div>
+            
+            <!-- Stránka 2 – C. Zoznam všetkých profesií (otázka 17) -->
+            <div class="page-section" data-page="2" data-courses="OPP,BTS,PZS,OOÚ">
+                <fieldset>
+                    <legend>C. Zoznam všetkých profesií</legend>
+                    <label for="q17">17. Názov profesie (napr. manažér, skladník, vodič, administratívny pracovník, atď.) / Počet zamestnancov:</label>
+                    <input type="text" id="q17" name="professions" required>
+                </fieldset>
+                
+            </div>
+            
+            <!-- Stránka 3 – D. Ochrana pred požiarmi (otázka 18) -->
+            <div class="page-section" data-page="3" data-courses="OPP,BTS">
+                <fieldset>
+                    <legend>D. Ochrana pred požiarmi</legend>
+                    <label>18. Vykonávate vašu ekonomickú činnosť vo vlastných alebo prenajatých priestoroch:</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="premises" value="vlastne" required> 1. Vlastné prevádzkové priestory</label>
+                        <label><input type="radio" name="premises" value="prenajate" required> 2. Prenajaté prevádzkové priestory</label>
+                    </div>
+                </fieldset>
+                
+            </div>
+            
+            <!-- Stránka 4 – E. Bezpečnostnotechnická služba – Bezpečnosť o ochrana zdravia pri práci (otázky 19-33) -->
+            <div class="page-section" data-page="4" data-courses="BTS">
+                <fieldset>
+                    <legend>E. Bezpečnostnotechnická služba – Bezpečnosť o ochrana zdravia pri práci</legend>
+                    <label for="q19">19. Osoby na obsluhu kotlov I. až V. – 02.2 - Uveďte počet zamestnancov:</label>
+                    <input type="number" id="q19" name="numBoilers" required>
+                    
+                    <label for="q20">20. Osoby na opravy kotlov I. až V. triedy a na opravy potrubných vedení s médiom para, horúca voda alebo vzduch – 02.3 - Uveďte počet zamestnancov:</label>
+                    <input type="number" id="q20" name="numBoilerRepairs" required>
+                    
+                    <label for="q21">21. Osoby na obsluhu mobilného žeriava výložníkového typu a vežového žeriava – 03.2 - Uveďte počet zamestnancov:</label>
+                    <input type="number" id="q21" name="numCranes" required>
+                    
+                    <label for="q22">22. Osoby na opravy osobných a nákladných výťahov – 03.3 - Uveďte počet zamestnancov:</label>
+                    <input type="number" id="q22" name="numElevatorRepairs" required>
+                    
+                    <label for="q23">23. Osoby na obsluhu vyhradených technických zariadení plynov (skupina 04.1) – 04.2 - Uveďte počet zamestnancov:</label>
+                    <input type="number" id="q23" name="numGasTechOps" required>
+                    
+                    <label for="q24">24. Osoby na opravy vyhradených technických zariadení plynov (skupina 04.1) – 04.3 - Uveďte počet zamestnancov:</label>
+                    <input type="number" id="q24" name="numGasTechRepairs" required>
+                    
+                    <label for="q25">25. Osoby na obsluhu motorových vozíkov – 06.1 - Uveďte počet zamestnancov:</label>
+                    <input type="number" id="q25" name="numForklift" required>
+                    
+                    <label for="q26">26. Osoby pracujúce vo výške pomocou špeciálnej horolezeckej a speleologickej techniky – 07.1 - Uveďte počet zamestnancov:</label>
+                    <input type="number" id="q26" name="numHighWork" required>
+                    
+                    <label for="q27">27. Osoby na montáž a demontáž lešenia – 07.2 - Uveďte počet zamestnancov:</label>
+                    <input type="number" id="q27" name="numScaffold" required>
+                    
+                    <label for="q28">28. Osoby na obsluhu vybraných stavebných strojov a zariadení – 08.1 - Uveďte počet zamestnancov:</label>
+                    <input type="number" id="q28" name="numConstruction" required>
+                    
+                    <label for="q29">29. Osoby na obsluhu vybraných poľnohospodárskych strojov a zariadení – 09.1 - Uveďte počet zamestnancov:</label>
+                    <input type="number" id="q29" name="numAgricultural" required>
+                    
+                    <label for="q30">30. Osoby na obsluhu vybraných lesníckych strojov a zariadení – 10.1 - Uveďte počet zamestnancov:</label>
+                    <input type="number" id="q30" name="numForestry" required>
+                    
+                    <label for="q31">31. Osoby na obsluhu ručnej motorovej reťazovej píly pri ťažbe dreva – 10.2 - Uveďte počet zamestnancov:</label>
+                    <input type="number" id="q31" name="numChainsawWood" required>
+                    
+                    <label for="q32">32. Osoby na obsluhu ručnej motorovej reťazovej píly pri inej činnosti – 10.3 - Uveďte počet zamestnancov:</label>
+                    <input type="number" id="q32" name="numChainsawOther" required>
+                    
+                    <label for="q33_text">33. Iné profesie alebo činnosti (doplniť názov):</label>
+                    <input type="text" id="q33_text" name="otherProfession">
+                      
+                    <label for="q33_number">Počet zamestnancov v tejto profesii/činnosti:</label>
+                    <input type="number" id="q33_number" name="numOther" required>
+                </fieldset>
+                
+            </div>
+            
+            <!-- Stránka 5 – F. Pracovná zdravotná služba -->
+            <div class="page-section" data-page="5" data-courses="PZS">
+                <fieldset>
+                    <legend>F. Pracovná zdravotná služba</legend>
+                    <label for="q34">34. Administratíva - Počet zamestnancov:</label>
+                    <input type="number" id="q34" name="numAdmin" required>
+                    
+                    <label for="q35">35. Výroba - Počet zamestnancov:</label>
+                    <input type="number" id="q35" name="numProduction" required>
+                    
+                    <label for="q36">36. Ďalšie profesie - Počet zamestnancov:</label>
+                    <input type="number" id="q36" name="numOtherProfessions" required>
+                    
+                    <label for="q37">37. Zamestnanci spolu:</label>
+                    <input type="number" id="q37" name="numTotal" required>
+                    
+                    <label for="q38">38. Počet zamestnancov, ktorí vykonávajú prácu v noci (22.00 – 6.00 hod.):</label>
+                    <input type="number" id="q38" name="numNightShift" required>
+                    
+                    <h3>KATEGORIZÁCIA PRÁC z hľadiska zdravotných rizík – profesie zaradené do rizikových kategórií (3. a 4.) rozhodnutím RÚVZ</h3>
+                    <label for="factor3">Faktor 3. kategória:</label>
+                    <input type="text" id="factor3" name="factor3" required>
+                    <label for="profession3">Profesia 3. kategória:</label>
+                    <input type="text" id="profession3" name="profession3" required>
+                    <label for="numEmployees3">Počet zamestnancov 3. kategória:</label>
+                    <input type="number" id="numEmployees3" name="numEmployees3" required>
+                    <label for="factor4">Faktor 4. kategória:</label>
+                    <input type="text" id="factor4" name="factor4" required>
+                    <label for="profession4">Profesia 4. kategória:</label>
+                    <input type="text" id="profession4" name="profession4" required>
+                    <label for="numEmployees4">Počet zamestnancov 4. kategória:</label>
+                    <input type="number" id="numEmployees4" name="numEmployees4" required>
+                    
+                    <h3>DOTERAJŠIE ZABEZPEČENIE LEKÁRSKYCH PREVENTÍVNYCH PREHLIADOK (LPP)</h3>
+                    <label for="doctor">Lekár vykonávajúci lekárske preventívne prehliadky:</label>
+                    <input type="text" id="doctor" name="doctor" required>
+                    <label for="doctorName">Meno a priezvisko lekára:</label>
+
+                    <input type="text" id="doctorName" name="doctorName" required>
+                    <label for="doctorAddress">Adresa:</label>
+                    <input type="text" id="doctorAddress" name="doctorAddress" required>
+                    <label for="doctorContact">Kontakt (tel., e-mail):</label>
+                    <input type="text" id="doctorContact" name="doctorContact" required>
+                    <label>Vaša spokojnosť s doterajším vykonávaním LPP:</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="lppSatisfaction" value="ano" required> Áno</label>
+                        <label><input type="radio" name="lppSatisfaction" value="nie" required> Nie</label>
+                    </div>
+                    <label for="specialRequests">Špecifické požiadavky na PZS z Vašej strany:</label>
+                    <textarea id="specialRequests" name="specialRequests" required></textarea>
+                </fieldset>
+                
+            </div>
+            
+            <!-- Stránka 6 – G. Ochrana životného prostredia -->
+            <div class="page-section" data-page="6" data-courses="OŽP">
+                <fieldset>
+                    <legend>G. Ochrana životného prostredia</legend>
+                    <h3>ODPADOVÉ HOSPODÁRSTVO</h3>
+                    <label>Poskytnutie k nahliadnutiu Ohlásenie o vzniku odpadu a nakladaní s ním za predchádzajúci rok?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="wasteDeclaration" value="ano" required> Áno</label>
+                        <label><input type="radio" name="wasteDeclaration" value="nie" required> Nie</label>
+                    </div>
+                    <h3>Má spoločnosť udelený platný súhlas na...?</h3>
+                    <label for="hazardousWasteAtSource">a) Zhromažďovanie nebezpečných odpadov u pôvodcu odpadov, ak zhromažďuje väčšie množstvo ako 1 tona nebezpečných odpadov:</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="hazardousWasteAtSource" value="ano" required> Áno</label>
+                        <label><input type="radio" name="hazardousWasteAtSource" value="nie" required> Nie</label>
+                    </div>
+                    <label for="otherPermit">b) Iné... (napr. na zariadenie na zhodnocovanie/ zneškodňovanie odpadov):</label>
+                    <input type="text" id="otherPermit" name="otherPermit" required>
+                    <label>Dováža spoločnosť tovar zo zahraničia?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="imports" value="ano" required> Áno</label>
+                        <label><input type="radio" name="imports" value="nie" required> Nie</label>
+                    </div>
+
+                    <label for="registeredProducts">Pre ktoré vyhradené výrobky ste registrovaný na MŽP SR (obaly/ neobalové výrobky/ elektrozariadenia/ batérie a akumulátory/ pneumatiky)?</label>
+                    <input type="text" id="registeredProducts" name="registeredProducts" required>
+                    
+                    <h3>OCHRANA OVZDUŠIA</h3>
+                    <label>Ste prevádzkovateľ zdrojov znečisťovania ovzdušia (malé/stredné/veľké)?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="airPollutionOperator" value="ano" required> Áno</label>
+                        <label><input type="radio" name="airPollutionOperator" value="nie" required> Nie</label>
+                    </div>
+                    <label for="pollutionSources">Ak áno, o aké zdroje znečisťovania sa jedná (kategorizácia v zmysle Vyhlášky č. 410/2012 Z.z.)?</label>
+                    <input type="text" id="pollutionSources" name="pollutionSources" required>
+                    <label>Disponuje spoločnosť súhlasmi na užívanie zdrojov znečisťovania (malé/stredné/veľké)?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="airPermit" value="ano" required> Áno</label>
+                        <label><input type="radio" name="airPermit" value="nie" required> Nie</label>
+                    </div>
+                    <label>Prevádzkujete chladiace a klimatizačné zariadenia (počet jednotiek, náplň/ typ chladiva, množstvo)?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="coolingSystems" value="ano" required> Áno</label>
+                        <label><input type="radio" name="coolingSystems" value="nie" required> Nie</label>
+                    </div>
+                    
+                    <h3>VODNÉ HOSPODÁRSTVO</h3>
+                    <label>Máte vypracovaný havarijný plán v zmysle vodného zákona (schválený SIŽP)?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="emergencyWaterPlan" value="ano" required> Áno</label>
+                        <label><input type="radio" name="emergencyWaterPlan" value="nie" required> Nie</label>
+                    </div>
+                    <label for="waterStructures">Máte prítomné vodné stavby: odlučovač ropných látok, lapač tukov, studňu, ČOV atď.?</label>
+                    <input type="text" id="waterStructures" name="waterStructures" required>
+                    <label>Vypúšťate odpadové vody do kanalizácie/ do vodného toku/ do podzemných vôd a je k tomu rozhodnutie?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="wastewaterDischarge" value="ano" required> Áno</label>
+                        <label><input type="radio" name="wastewaterDischarge" value="nie" required> Nie</label>
+                    </div>
+                    <label>Máte ustanovenú funkciu vodohospodára?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="waterManager" value="ano" required> Áno</label>
+                        <label><input type="radio" name="waterManager" value="nie" required> Nie</label>
+                    </div>
+                    <label>Máte nádrže – nadzemné/ podzemné na znečisťujúce látky (napr. ropné látky, farby, riedidlá atď.)?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="storageTanks" value="ano" required> Áno</label>
+                        <label><input type="radio" name="storageTanks" value="nie" required> Nie</label>
+                    </div>
+                    <label>Máte vybudovaný sklad pre znečisťujúce látky (sklad odpadov, chemických látok, atď.)?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="chemicalStorage" value="ano" required> Áno</label>
+                        <label><input type="radio" name="chemicalStorage" value="nie" required> Nie</label>
+                    </div>
+                </fieldset>
+                
+            </div>
+            
+            <!-- Stránka 7 – H. Civilná ochrana -->
+            <div class="page-section" data-page="7" data-courses="CO">
+                <fieldset>
+                    <legend>H. Civilná ochrana</legend>
+                    <h3>Civilná ochrana Obyvateľstva</h3>
+                    <label>Má spoločnosť vypracovaný havarijný plán? (Spoločnosť, ktorá svojou činnosťou môže pri vzniku mimoriadnej situácie ohroziť/poškodiť životné prostredie)</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="emergencyPlanCivil" value="ano" required> Áno</label>
+                        <label><input type="radio" name="emergencyPlanCivil" value="nie" required> Nie</label>
+                    </div>
+                    <label>Má spoločnosť vypracovaný dokument „Plán ochrany zamestnancov a osôb prevzatých do starostlivosti"?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="protectionPlanCivil" value="ano" required> Áno</label>
+                        <label><input type="radio" name="protectionPlanCivil" value="nie" required> Nie</label>
+                    </div>
+                    <label>Sú objekty spoločnosti vybavené prostriedkami na varovanie a vyrozumenie zamestnancov a osôb prevzatých do starostlivosti? (domáci rozhlas, evakuačný rozhlas, telefónna sieť a i.)</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="warningSystemsCivil" value="ano" required> Áno</label>
+                        <label><input type="radio" name="warningSystemsCivil" value="nie" required> Nie</label>
+                    </div>
+                    <label>Nachádzajú sa v objektoch osoby prevzaté do starostlivosti? (dodávateľské spoločnosti, SBS a i.)</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="carePersonsCivil" value="ano" required> Áno</label>
+                        <label><input type="radio" name="carePersonsCivil" value="nie" required> Nie</label>
+                    </div>
+                    <label>Majú objekty spoločnosti spracovanú projektovú dokumentáciu? (pôdorysy podlaží)</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="projectDocumentationCivil" value="ano" required> Áno</label>
+                        <label><input type="radio" name="projectDocumentationCivil" value="nie" required> Nie</label>
+                    </div>
+                </fieldset>
+                
+            </div>
+            
+            <!-- Stránka 8 – I. Ochrana osobných údajov -->
+            <div class="page-section" data-page="8" data-courses="OOÚ">
+                <fieldset>
+                    <legend>I. Ochrana osobných údajov</legend>
+                    <label for="personalDataProcessingDescription">Uveďte stručný popis tých činností, pri ktorých spracúvate osobné údaje fyzických osôb.<br>
+                        <small>(Osobnými údajmi sú údaje týkajúce sa určenej alebo určiteľnej fyzickej osoby, ktorú možno určiť priamo alebo nepriamo na základe všeobecne použiteľného identifikátora či iných znakov.)</small></label>
+                    <textarea id="personalDataProcessingDescription" name="personalDataProcessingDescription" required></textarea>
+                    
+                    <label for="numEmployeesProcessing">Uveďte počet vašich zamestnancov, ktoré pri výkone svojej funkcie spracúvajú osobné údaje (oprávnené osoby):</label>
+                    <input type="number" id="numEmployeesProcessing" name="numEmployeesProcessing" required>
+                    
+                    <label>Spracúvate aj osobitné kategórie osobných údajov, ak áno, aké?</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="specialCategories[]" value="osobneUdaje"> Osobné údaje (odhaľujúce rasový/etnický pôvod, politické názory, náboženskú vieru, svetonázor, členstvo v politických stranách či v odborových organizáciách, údaje týkajúce sa zdravia či pohlavného života)</label>
+                        <label><input type="checkbox" name="specialCategories[]" value="biometrickeUdaje"> Biometrické údaje (napr. odtlačky prsta, DNA)</label>
+                        <label><input type="checkbox" name="specialCategories[]" value="ine"> Iné</label>
+                    </div>
+                    <label for="otherSpecialCategory">Ak ste označili "Iné", uveďte:</label>
+                    <input type="text" id="otherSpecialCategory" name="otherSpecialCategory" required>
+                    
+                    <label>Prevádzkovateľ poveril spracúvaním osobných údajov sprostredkovateľa – inú právnickú alebo fyzickú osobu?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="outsourcedDataProcessing" value="ano" required> Áno</label>
+                        <label><input type="radio" name="outsourcedDataProcessing" value="nie" required> Nie</label>
+                    </div>
+                    <label for="outsourcedDetail">Ak áno, uveďte koho:</label>
+                    <input type="text" id="outsourcedDetail" name="outsourcedDetail" required>
+                    
+                    <label>Spracúvate osobné údaje v pozícii sprostredkovateľa?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="subcontractorRole" value="ano" required> Áno</label>
+                        <label><input type="radio" name="subcontractorRole" value="nie" required> Nie</label>
+                    </div>
+                    <label for="subcontractorDetail">Ak áno, uveďte pre koho:</label>
+                    <input type="text" id="subcontractorDetail" name="subcontractorDetail" required>
+                    
+                    <label>Prevádzkujete kamerový systém?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="cameraSystem" value="ano" required> Áno</label>
+                        <label><input type="radio" name="cameraSystem" value="nie" required> Nie</label>
+                    </div>
+                    
+                    <label>Máte na kontrolu zamestnancov zavedený kontrolný mechanizmus podľa § 13 ods. 4 Zákonníka práce?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="employeeControlMechanism" value="ano" required> Áno</label>
+                        <label><input type="radio" name="employeeControlMechanism" value="nie" required> Nie</label>
+                    </div>
+                    
+                    <label>Prevádzkujete e-shop?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="eShop" value="ano" required> Áno</label>
+                        <label><input type="radio" name="eShop" value="nie" required> Nie</label>
+                    </div>
+                    
+                    <label>Prevádzkujete priamy marketing? Posielate zákazníkom newsletter alebo inú formu reklamy?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="directMarketing" value="ano" required> Áno</label>
+            <label><input type="radio" name="directMarketing" value="nie" required> Nie</label>
+          </div>
+          
+          <label>Organizujete spotrebiteľské súťaže alebo súťaže pre zákazníkov?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="competitions" value="ano" required> Áno</label>
+            <label><input type="radio" name="competitions" value="nie" required> Nie</label>
+          </div>
+          
+          <label>Vediete pre zákazníkov vernostný program?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="loyaltyProgram" value="ano" required> Áno</label>
+            <label><input type="radio" name="loyaltyProgram" value="nie" required> Nie</label>
+          </div>
+          
+          <label>Zaznamenávate identifikačné údaje osôb pri ich jednorazovom vstupe do objektu (napr. kniha návštev)?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="visitorRegistration" value="ano" required> Áno</label>
+            <label><input type="radio" name="visitorRegistration" value="nie" required> Nie</label>
+          </div>
+          
+          <label>Ste povinnou osobou v zmysle § 5 zákona č. 297/2008 o ochrane pred legalizáciou príjmov z trestnej činnosti a o ochrane pred financovaním terorizmu?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="obligatedPerson1" value="ano" required> Áno</label>
+            <label><input type="radio" name="obligatedPerson1" value="nie" required> Nie</label>
+          </div>
+          
+          <label>Ste prevádzkovateľom, ktorý je povinný plniť povinnosti v zmysle § 10 zákona č. 54/2019 Z. z. o ochrane oznamovateľov protispoločenskej činnosti?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="obligatedPerson2" value="ano" required> Áno</label>
+            <label><input type="radio" name="obligatedPerson2" value="nie" required> Nie</label>
+          </div>
+          
+          <label>Poverili ste výkonom dohľadu nad ochranou osobných údajov zodpovednú osobu?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="dataProtectionOfficer" value="ano" required> Áno</label>
+            <label><input type="radio" name="dataProtectionOfficer" value="nie" required> Nie</label>
+          </div>
+          
+          <label>Vykonávate cezhraničný prenos osobných údajov do tretích krajín?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="crossBorderTransfer" value="ano" required> Áno</label>
+            <label><input type="radio" name="crossBorderTransfer" value="nie" required> Nie</label>
+          </div>
+          <label for="transferCountries">Ak áno, uveďte, do ktorých krajín:</label>
+          <input type="text" id="transferCountries" name="transferCountries" required>
+          
+          <label>Spracúvate osobné údaje na základe súhlasu dotknutej osoby, ktorá nedovŕšila 16 rokov veku?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="underageConsent" value="ano" required> Áno</label>
+            <label><input type="radio" name="underageConsent" value="nie" required> Nie</label>
+          </div>
+          
+          <label>Vykonávate profilovanie?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="profiling" value="ano" required> Áno</label>
+            <label><input type="radio" name="profiling" value="nie" required> Nie</label>
+          </div>
+          
+          <label>Mali ste do roku 2018 spracovaný bezpečnostný projekt a dokumentáciu súvisiacu s ochranou osobných údajov (zákon 122/2013 Z. z.)?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="securityProject2018" value="ano" required> Áno</label>
+            <label><input type="radio" name="securityProject2018" value="nie" required> Nie</label>
+          </div>
+          
+          <label>Od roku 2018 platí nové Nariadenie (GDPR) a Zákon č. 18/2018 Z. z. o ochrane osobných údajov. Máte spracovanú dokumentáciu v zmysle týchto predpisov? Ak áno, v akom rozsahu?</label>
+          <textarea id="gdprDocumentation" name="gdprDocumentation" required></textarea>
+        </fieldset>
+        
+      </div>
+      
+    
+<div style="text-align: center; margin-top: 40px;">
+  <button type="submit" style="padding: 12px 24px; font-size: 16px;">Odoslať</button>
+</div>
+
+</form>
+  
+<style>
+.option {
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.option:hover {
+    background-color: #e6f4fb;
+}
+
+.option.selected {
+    background-color: #009DE0;
+    border: 1px solid #007bb3;
+    color: white;
+    font-weight: bold;
+}
+</style>
+
+
+<script>
+let selectedCourses = new Set();
+const pages = document.querySelectorAll('.page-section');
+
+function toggleCourse(course) {
+    const display = document.getElementById("selectedCourseDisplay");
+    const nav = document.getElementById("welcomeNavigation");
+
+    if (selectedCourses.has(course)) {
+        selectedCourses.delete(course);
+    } else {
+        selectedCourses.add(course);
+    }
+
+    if (selectedCourses.size > 0) {
+        display.innerText = "Vybrali ste si: " + Array.from(selectedCourses).join(", ");
+        display.style.display = "block";
+        nav.style.display = "block";
+    } else {
+        display.innerText = "";
+        display.style.display = "none";
+        nav.style.display = "none";
+    }
+
+    // Optional: visually highlight selected options
+    document.querySelectorAll('.course-options .option').forEach(option => {
+        const courseCode = option.innerText.match(/\„(.+?)\“/);
+        if (courseCode && selectedCourses.has(courseCode[1])) {
+            option.classList.add('selected');
+        } else {
+            option.classList.remove('selected');
+        }
+    });
+}
+
+function filterPages() {
+    const allowedPages = {
+        "OPP": ["0", "1", "2", "3"],
+        "BTS": ["0", "1", "2", "3", "4"],
+        "PZS": ["0", "1", "2", "5"],
+        "OŽP": ["0", "1", "6"],
+        "CO": ["0", "1", "7"],
+        "OOÚ": ["0", "1", "2", "8"]
+    };
+
+    const pagesToShow = new Set();
+
+    selectedCourses.forEach(course => {
+        (allowedPages[course] || []).forEach(page => pagesToShow.add(page));
+    });
+
+    pages.forEach(page => {
+        const pageNum = page.getAttribute("data-page");
+        page.style.display = pagesToShow.has(pageNum) ? "block" : "none";
+    });
+}
+
+function startQuestionnaire() {
+    document.getElementById("welcomePage").style.display = "none";
+    document.getElementById("fireSafetyForm").style.display = "block";
+    filterPages();
+}
+	
+</script>
+	   
+
+</div>
+</body>
+</html>
